@@ -1,23 +1,14 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useData } from "../contexts/DataContext";
-import ProfileHeader from "../components/ProfileHeader";
-
 export default function Profile() {
-  const { id } = useParams();
-  const { db } = useData();
-  const profile = db.users.find(u => u.id === id) || {};
-  const posts = db.posts.filter(p => p.userId === id);
-
-  if (!profile.id) return <div className="container">Profile not found</div>;
-
   return (
-    <div className="container">
-      <ProfileHeader profile={profile} />
-      <div style={{ marginTop: 12 }} className="profile-posts">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
-          {posts.map(p => <img key={p.id} src={p.image} alt={p.caption} style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: 8 }} />)}
-        </div>
+    <div className="page">
+      <div className="profile-header">
+        <img src="/images/user1.jpg" alt="User" className="avatar" />
+        <h2>john_doe</h2>
+      </div>
+      <div className="explore-grid">
+        <img src="/images/post1.jpg" alt="Post 1" />
+        <img src="/images/post2.jpg" alt="Post 2" />
+        <img src="/images/post3.jpg" alt="Post 3" />
       </div>
     </div>
   );
