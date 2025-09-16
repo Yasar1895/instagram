@@ -1,5 +1,4 @@
 import React from "react";
-import "./Stories.css";
 
 const Stories = () => {
   const stories = [
@@ -9,12 +8,44 @@ const Stories = () => {
     { id: 4, username: "john", img: "/images/story4.jpg" },
   ];
 
+  const storyStyle = {
+    textAlign: "center",
+    fontSize: "12px",
+    color: "#262626",
+  };
+
+  const ringStyle = {
+    width: "60px",
+    height: "60px",
+    borderRadius: "50%",
+    padding: "2px",
+    background: "linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const imgStyle = {
+    width: "55px",
+    height: "55px",
+    borderRadius: "50%",
+    border: "2px solid white",
+  };
+
+  const storiesContainer = {
+    display: "flex",
+    overflowX: "auto",
+    gap: "12px",
+    padding: "12px",
+    borderBottom: "1px solid #dbdbdb",
+  };
+
   return (
-    <div className="stories">
+    <div style={storiesContainer}>
       {stories.map((story) => (
-        <div key={story.id} className="story">
-          <div className="story-ring">
-            <img src={story.img} alt={story.username} />
+        <div key={story.id} style={storyStyle}>
+          <div style={ringStyle}>
+            <img src={story.img} alt={story.username} style={imgStyle} />
           </div>
           <p>{story.username}</p>
         </div>
