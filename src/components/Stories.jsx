@@ -1,22 +1,18 @@
-import React from "react";
-import { useData } from "../contexts/DataContext";
-
 export default function Stories() {
-  const { db } = useData();
-  const stories = db.stories || [];
-  const users = db.users || [];
+  const stories = [
+    { id: 1, username: "john_doe", image: "/images/user1.jpg" },
+    { id: 2, username: "emma_w", image: "/images/user2.jpg" },
+    { id: 3, username: "alex99", image: "/images/user3.jpg" },
+  ];
 
   return (
-    <div className="stories container">
-      {stories.map(s => {
-        const u = users.find(x => x.id === s.userId);
-        return (
-          <div key={s.id} className="story">
-            <img src={u?.avatar} alt={u?.username} className="img" />
-            <div style={{ marginTop: 8 }}>{u?.username}</div>
-          </div>
-        );
-      })}
+    <div className="stories">
+      {stories.map(story => (
+        <div key={story.id} className="story">
+          <img src={story.image} alt={story.username} className="story-avatar" />
+          <p>{story.username}</p>
+        </div>
+      ))}
     </div>
   );
 }
