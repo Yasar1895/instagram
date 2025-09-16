@@ -1,14 +1,40 @@
-import { Link } from "react-router-dom";
-import { AiFillHome, AiOutlineSearch, AiFillMessage } from "react-icons/ai";
-import { FaUserCircle } from "react-icons/fa";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FiHome, FiSearch, FiPlayCircle, FiUser } from "react-icons/fi";
 
-export default function BottomNav() {
+const BottomNav = () => {
+  const location = useLocation();
+
+  const activeStyle = {
+    color: "#000",
+    fontWeight: "bold",
+  };
+
   return (
-    <nav className="bottom-nav">
-      <Link to="/"><AiFillHome size={24} /></Link>
-      <Link to="/explore"><AiOutlineSearch size={24} /></Link>
-      <Link to="/messages"><AiFillMessage size={24} /></Link>
-      <Link to="/profile"><FaUserCircle size={24} /></Link>
-    </nav>
+    <div className="bottom-nav">
+      <Link to="/" style={location.pathname === "/" ? activeStyle : {}}>
+        <FiHome size={24} />
+      </Link>
+      <Link
+        to="/explore"
+        style={location.pathname === "/explore" ? activeStyle : {}}
+      >
+        <FiSearch size={24} />
+      </Link>
+      <Link
+        to="/reels"
+        style={location.pathname === "/reels" ? activeStyle : {}}
+      >
+        <FiPlayCircle size={24} />
+      </Link>
+      <Link
+        to="/profile"
+        style={location.pathname === "/profile" ? activeStyle : {}}
+      >
+        <FiUser size={24} />
+      </Link>
+    </div>
   );
-}
+};
+
+export default BottomNav;
