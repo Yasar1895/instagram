@@ -1,23 +1,24 @@
-import React from "react";
 import Stories from "../components/Stories";
 import Post from "../components/Post";
-import CreatePostModal from "../components/CreatePostModal";
-import { useData } from "../contexts/DataContext";
 
 export default function Home() {
-  const { db } = useData();
-  const posts = (db.posts || []).slice().sort((a, b) => b.createdAt - a.createdAt);
-
   return (
-    <div className="container">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>Home</h1>
-        <CreatePostModal />
-      </div>
+    <div className="page">
       <Stories />
-      <div style={{ marginTop: 12 }}>
-        {posts.map(p => <Post key={p.id} post={p} />)}
-      </div>
+      <Post
+        username="john_doe"
+        avatar="/images/user1.jpg"
+        image="/images/post1.jpg"
+        likes={120}
+        caption="Enjoying the sunny vibes!"
+      />
+      <Post
+        username="emma_w"
+        avatar="/images/user2.jpg"
+        image="/images/post2.jpg"
+        likes={340}
+        caption="Coffee time ☕"
+      />
     </div>
   );
 }
