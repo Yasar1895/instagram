@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 const DataContext = createContext();
 const DB_KEY = "insta_clone_db_v1";
