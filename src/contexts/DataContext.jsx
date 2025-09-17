@@ -65,7 +65,6 @@ export function DataProvider({ children }) {
     localStorage.setItem(DB_KEY, JSON.stringify(db));
   }, [db]);
 
-  // Users
   const addUser = ({ username, email, password, avatar }) => {
     if (db.users.some(u => u.email === email)) return { ok: false, message: "Email already taken" };
     const user = { id: uuidv4(), username, email, password, avatar: avatar || "/images/avatar1.jpg", bio: "" };
@@ -73,7 +72,6 @@ export function DataProvider({ children }) {
     return { ok: true, user };
   };
 
-  // Posts
   const addPost = ({ userId, image, caption }) => {
     const p = { id: uuidv4(), userId, image, caption, likes: [], comments: [], createdAt: Date.now() };
     setDb(prev => ({ ...prev, posts: [p, ...prev.posts] }));
@@ -98,13 +96,11 @@ export function DataProvider({ children }) {
     setDb(prev => ({ ...prev, posts: prev.posts.map(p => (p.id === postId ? { ...p, comments: [...p.comments, comment] } : p)) }));
   };
 
-  // Stories
   const addStory = (userId, image) => {
     const s = { id: uuidv4(), userId, image, createdAt: Date.now() };
     setDb(prev => ({ ...prev, stories: [s, ...prev.stories] }));
   };
 
-  // Follows
   const toggleFollow = (currentUserId, targetUserId) => {
     setDb(prev => {
       const list = prev.follows[currentUserId] || [];
@@ -114,7 +110,6 @@ export function DataProvider({ children }) {
     });
   };
 
-  // Messages
   const sendMessage = (members, sender, text) => {
     setDb(prev => {
       const key = members.slice().sort().join("|");
@@ -129,7 +124,6 @@ export function DataProvider({ children }) {
     });
   };
 
-  // Profile update
   const updateProfile = (userId, changes) => {
     setDb(prev => ({ ...prev, users: prev.users.map(u => (u.id === userId ? { ...u, ...changes } : u)) }));
   };
