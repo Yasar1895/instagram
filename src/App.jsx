@@ -1,46 +1,60 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import BottomNav from "./components/BottomNav";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { DataProvider } from "./contexts/DataContext";
+
+// Pages
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
 import PostPage from "./pages/PostPage";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import PrivateRoute from "./components/PrivateRoute";
 
-const App = () => {
+// Components
+import Navbar from "./components/Navbar";
+import BottomNav from "./components/BottomNav";
+
+function AppRoutes() {
+  const { user } = useAuth();
+
   return (
-    <Router>
-      <Navbar />
-
-      {/* Main content */}
-      <div style={{ paddingBottom: "60px" }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/post/:id" element={<PostPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          {/* Protected route example */}
-          <Route
-            path="/create"
-            element={
-              <PrivateRoute>
-                <PostPage />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </div>
-
-      <BottomNav />
-    </Router>
+    <>
+      {user && <Navbar />}
+      <Routes>
+        {!user ? (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            {/* Redirect any unknown path to login */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/post/:id" element={<PostPage />} />
+            {/* Redirect unknown routes to home */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </>
+        )}
+      </Routes>
+      {user && <BottomNav />}
+    </>
   );
-};
+}
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <DataProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </DataProvider>
+    </AuthProvider>
+  );
+}
