@@ -17,7 +17,7 @@ function seed() {
       image: "/images/post1.jpg",
       caption: "Sunset at the beach 🌅",
       likes: ["u2"],
-      comments: [{ id: uuid(), userId: "u2", text: "Wow! beautiful." }],
+      comments: [{ id: uuidv4(), userId: "u2", text: "Wow! beautiful." }],
       createdAt: Date.now() - 1000 * 60 * 60 * 24
     },
     {
@@ -41,8 +41,8 @@ function seed() {
       id: "m1",
       members: ["u1", "u2"],
       threads: [
-        { id: uuid(), sender: "u1", text: "Hey, how are you?", at: Date.now() - 1000 * 60 * 60 },
-        { id: uuid(), sender: "u2", text: "Good! Baking now 😄", at: Date.now() - 1000 * 60 * 50 }
+        { id: uuidv4(), sender: "u1", text: "Hey, how are you?", at: Date.now() - 1000 * 60 * 60 },
+        { id: uuidv4(), sender: "u2", text: "Good! Baking now 😄", at: Date.now() - 1000 * 60 * 50 }
       ]
     }
   ];
@@ -68,14 +68,14 @@ export function DataProvider({ children }) {
   // Users
   const addUser = ({ username, email, password, avatar }) => {
     if (db.users.some(u => u.email === email)) return { ok: false, message: "Email already taken" };
-    const user = { id: uuid(), username, email, password, avatar: avatar || "/images/avatar1.jpg", bio: "" };
+    const user = { id: uuidv4(), username, email, password, avatar: avatar || "/images/avatar1.jpg", bio: "" };
     setDb(prev => ({ ...prev, users: [user, ...prev.users] }));
     return { ok: true, user };
   };
 
   // Posts
   const addPost = ({ userId, image, caption }) => {
-    const p = { id: uuid(), userId, image, caption, likes: [], comments: [], createdAt: Date.now() };
+    const p = { id: uuidv4(), userId, image, caption, likes: [], comments: [], createdAt: Date.now() };
     setDb(prev => ({ ...prev, posts: [p, ...prev.posts] }));
     return p;
   };
@@ -94,13 +94,13 @@ export function DataProvider({ children }) {
   };
 
   const addComment = (postId, userId, text) => {
-    const comment = { id: uuid(), userId, text, createdAt: Date.now() };
+    const comment = { id: uuidv4(), userId, text, createdAt: Date.now() };
     setDb(prev => ({ ...prev, posts: prev.posts.map(p => (p.id === postId ? { ...p, comments: [...p.comments, comment] } : p)) }));
   };
 
   // Stories
   const addStory = (userId, image) => {
-    const s = { id: uuid(), userId, image, createdAt: Date.now() };
+    const s = { id: uuidv4(), userId, image, createdAt: Date.now() };
     setDb(prev => ({ ...prev, stories: [s, ...prev.stories] }));
   };
 
@@ -119,11 +119,11 @@ export function DataProvider({ children }) {
     setDb(prev => {
       const key = members.slice().sort().join("|");
       const existing = prev.messages.find(m => m.members.slice().sort().join("|") === key);
-      const msg = { id: uuid(), sender, text, at: Date.now() };
+      const msg = { id: uuidv4(), sender, text, at: Date.now() };
       if (existing) {
         return { ...prev, messages: prev.messages.map(m => (m.id === existing.id ? { ...m, threads: [...m.threads, msg] } : m)) };
       } else {
-        const thread = { id: uuid(), members, threads: [msg] };
+        const thread = { id: uuidv4(), members, threads: [msg] };
         return { ...prev, messages: [thread, ...prev.messages] };
       }
     });
